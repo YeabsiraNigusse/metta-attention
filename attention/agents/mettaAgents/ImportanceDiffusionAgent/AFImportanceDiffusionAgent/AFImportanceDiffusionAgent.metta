@@ -128,7 +128,7 @@
 ;;            $space2: The space that will be used to find incomingSets
 ;; Return : The spreadImportance function is called
 
-(: AFImportanceDiffusionAgent-Run (-> Grounded Grounded Empty))
+(AFImportanceDiffusionAgent-Run (-> Grounded Grounded Atom))
 (= (AFImportanceDiffusionAgent-Run $space $space2)
     (let*
         (($vals (spreadImportance $space $space2)))

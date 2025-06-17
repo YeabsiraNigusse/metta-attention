@@ -7,7 +7,7 @@
 ;;            $AForWA: a flag if the calculation to use is for AF or WA
 ;; Return : trades sti value from source to target
 
-; (: diffuseAtom (-> Atom Grounded Symbol Atom))
+(: diffuseAtom (-> Atom Grounded Symbol Expression))
 (= (diffuseAtom $atom $space $AForWA)
     (let*
         (
@@ -29,20 +29,31 @@
                                        (calculateDiffusionAmountWA $atom)
                                     )
             )
-            (($atomToReceive $stiGiven)
-                    (if (== $totaldiffusionAmount 0)
-                        (() 0)
-                        (let*
-                            (
-                                (($first $second) (superpose $combProbabilityVector))
-                                ($diffusionAmount  (* $totaldiffusionAmount $second))
-                            )
-                            ($first $diffusionAmount)
-                        )
-                    )
-            )
         )
-        ($atom $atomToReceive $stiGiven)
+        (if (== $AForWA AF)
+            (if (== $totaldiffusionAmount 0)
+                ($atom () 0)
+                (collapse 
+                    (let*
+                        (
+                            (($first $second) (superpose $combProbabilityVector))
+                            ($diffusionAmount  (* $totaldiffusionAmount $second))
+                        )
+                        ($atom $first $diffusionAmount)
+                    )
+                )
+            )
+            (if (== $totaldiffusionAmount 0)
+                ($atom () 0)
+                (let*
+                    (
+                        (($first $second) (superpose $combProbabilityVector))
+                        ($diffusionAmount  (* $totaldiffusionAmount $second))
+                    )
+                    ($atom $first $diffusionAmount)
+                )
+            ) 
+        )
     )
 )
 
