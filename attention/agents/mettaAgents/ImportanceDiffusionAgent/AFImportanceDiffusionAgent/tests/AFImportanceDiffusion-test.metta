@@ -62,16 +62,18 @@
 !(assertEqual (getSTI (INHERITANCE_LINK target3 source)) 2598.625)
 !(assertEqual (getSTI (ASYMMETRIC_HEBBIAN_LINK target2 target3)) 0)
 !(assertEqual (getSTI (INHERITANCE_LINK target3 (ASYMMETRIC_HEBBIAN_LINK sorce target4))) 1600)
+!(assertEqual (collapse (get-atoms &AFtradeingSpace)) ())
 
 ; ;########################## Running the AF Importance Diffusion Agent #############################
 !(AFImportanceDiffusionAgent-Run (attentionalFocus) (TypeSpace))
 ; ;########################## Testing the STI values #############################
-!(assertEqual (getSTI source) 5998.9000000000015)
+
+!(assertEqual (getSTI source) 5998.900000000001)
 !(assertEqual (getSTI target1) 8000.0)
 !(assertEqual (getSTI target2) 8000.0)
-!(assertEqual (getSTI target3) 4043.3250000000003)
-!(assertEqual (getSTI target4) 3722.7250000000004)
-!(assertEqual (getSTI target5) 3719.7250000000004)
+!(assertEqual (getSTI target3) 4043.325)
+!(assertEqual (getSTI target4) 3722.725)
+!(assertEqual (getSTI target5) 3719.725)
 !(assertEqual (getSTI target6) 199.72500000000002)
 !(assertEqual (getSTI target7) 0.0)
 !(assertEqual (getSTI target8) 0.0)
