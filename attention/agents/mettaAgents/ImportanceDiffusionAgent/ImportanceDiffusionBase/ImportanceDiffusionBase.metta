@@ -29,20 +29,31 @@
                                        (calculateDiffusionAmountWA $atom)
                                     )
             )
-            (($atomToReceive $stiGiven)
-                    (if (== $totaldiffusionAmount 0)
-                        (() 0)
-                        (let*
-                            (
-                                (($first $second) (superpose $combProbabilityVector))
-                                ($diffusionAmount  (* $totaldiffusionAmount $second))
-                            )
-                            ($first $diffusionAmount)
-                        )
-                    )
-            )
         )
-        ($atom $atomToReceive $stiGiven)
+        (if (== $AForWA AF)
+            (if (== $totaldiffusionAmount 0)
+                ($atom () 0)
+                (collapse 
+                    (let*
+                        (
+                            (($first $second) (superpose $combProbabilityVector))
+                            ($diffusionAmount  (* $totaldiffusionAmount $second))
+                        )
+                        ($atom $first $diffusionAmount)
+                    )
+                )
+            )
+            (if (== $totaldiffusionAmount 0)
+                ($atom () 0)
+                (let*
+                    (
+                        (($first $second) (superpose $combProbabilityVector))
+                        ($diffusionAmount  (* $totaldiffusionAmount $second))
+                    )
+                    ($atom $first $diffusionAmount)
+                )
+            ) 
+        )
     )
 )
 
