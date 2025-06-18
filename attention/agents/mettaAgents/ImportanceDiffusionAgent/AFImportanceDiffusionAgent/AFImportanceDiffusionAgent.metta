@@ -150,7 +150,10 @@
             ($targetOldSti (getSTI $atomToReceive))
             ($targetNewSti (+ $targetOldSti $stiGiven))
         )
-        (setSTI $atomToReceive $targetNewSti)
+        (if (== $atomToReceive ())
+            ()
+            (setSTI $atomToReceive $targetNewSti)
+        )
     )
 )
 ;; This function is the entry point to the AFImportance Diffusion Agent
