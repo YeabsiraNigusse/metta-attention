@@ -9,9 +9,12 @@
 (: HebbianCreationAgent-Run(-> Grounded Grounded Grounded empty))
 (= (HebbianCreationAgent-Run $space $space2 $space3)
     ; if the attentional focus is empty no work is done
-    (if ( == (attentionalFocusSize)  0)
-        ("Empty Attentional Focus")
-        (let $source 
+    (let ()
+        (let ()
+            (println! (!!!!!!!!!!!!!!!!! HebbianCreationAgent !!!!!!!!!!!!!!!!!!))
+            (if ( == (attentionalFocusSize)  0)
+                ("Empty Attentional Focus")
+                (let $source 
                     (let*
                         (
                             ($afAtoms (getNewAtomInAVList))
@@ -64,8 +67,9 @@
                 )
             )
         )
-    )
-)
+    ))
+    (println! (!!!!!!!!!!!! HebbianCreationAgent Finished !!!!!!!!!!!!!!!!!!))
+))
 
 ;;Function: removeHebbianLinksfromAF
 ;;Description: removes Hebbian Links from the AF

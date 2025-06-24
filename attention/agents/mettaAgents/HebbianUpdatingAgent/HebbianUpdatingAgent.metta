@@ -1,6 +1,8 @@
 !(bind! tcDecayRate 0.1)
 !(bind! DEFAULT_K 800)
 
+! (bind! time-mod (py-atom time))
+! (bind! timeTime(py-dot time-mod time (-> Number)))
 ;;; Function: HebbianUpdatingAgent-Run
 ;;; Description: Main Function to run the Hebbian Updating Agent.
 ;;; Parameters: None
@@ -10,11 +12,17 @@
 
 (: HebbianUpdatingAgent-Run (-> Grounded Atom))
 (= (HebbianUpdatingAgent-Run $space)
-    (let $atoms (getAtomList)
-        (if (== $atoms ())
-            ()
-            (let $randomAtom (getRandomAtomInAF)
-                (updateHebbianLinks $randomAtom $space)
+    (let ()
+        (println! (------------- HebbianUpdatingAgent -----------))
+        (let $atoms (getAtomList)
+            (if (== $atoms ())
+                ()
+                (let () 
+                    (let $randomAtom (getRandomAtomInAF)
+                        (updateHebbianLinks $randomAtom $space)
+                    )
+                    (println! (----------------- HebbianUpdatingAgent Finished ----------------))
+                )
             )
         )
     )

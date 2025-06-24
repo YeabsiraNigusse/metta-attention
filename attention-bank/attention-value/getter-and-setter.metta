@@ -8,6 +8,7 @@
 (: setAv (-> Atom (Number Number Number) Atom))
 (= (setAv $pattern ($sti $lti $vlti))
     (let* (
+        (() (println! (setting Av for $pattern with $sti $lti $vlti)))
         ($oldSTI (getSTI $pattern))
         ($oldLTI (getLTI $pattern))
         ($updateimpo (updateImportance (AtomBin) $pattern $oldSTI $sti))
@@ -37,6 +38,7 @@
            ($newstifund (+ $fundsSTI $stiDiff))
            ($newltifund (+ $fundsLTI $ltiDiff))
            ($updater (attentionValueChanged $pattern $newstifund $newltifund))  ; Update attentional focus and global paremeter
+           (() (println! (finished setting Av for $pattern with $sti $lti newstifund $newstifund newltifund $newltifund )))
     )
    ()
 )
