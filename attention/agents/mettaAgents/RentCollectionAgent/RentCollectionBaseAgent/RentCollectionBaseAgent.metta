@@ -8,8 +8,8 @@
    (let*
       (
          ($funds (getAttentionBank  fundsSTI))
-         ($targetSTI (getAttentionParam TargetStiFunds))
-         ($stiFundsBuffer (getAttentionParam StiFundsBuffer))
+         ($targetSTI  (match &space (targetSTI $y) $y))
+         ($stiFundsBuffer (match &space (stiFundsBuffer $z) $z))
          ($diff (- $targetSTI $funds))
       )
       (if  (<= $diff 0)
@@ -37,8 +37,8 @@
    (let*
       (
          ($funds (getAttentionBank fundsLTI))
-         ($targetLTI (getAttentionParam TargetLtiFunds))
-         ($ltiFundsBuffer (getAttentionParam LtiFundsBuffer))
+         ($targetLTI (match  &space  (targetLTI $y) $y))
+         ($ltiFundsBuffer (match  &space  (ltiFundsBuffer $z) $z))
          ($diff (- $targetLTI $funds))
       )
       (if (<= $diff 0)

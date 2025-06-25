@@ -31,7 +31,7 @@
 (collapse (match &insect (insect $x) $x))
 (collapse (match &poison (poison $x) $x))
 
-!(updateAttentionParam MAX_AF_SIZE 15)
+!(updateAttentionParam MAX_AF_SIZE 8)
 (=(spaceAdder) (get-atoms &tempspace)) 
 !(spaceAdder)
 
@@ -50,9 +50,10 @@
                 )
                 (
                     (stimulate $now 700)
+                    ((py-atom time.sleep) (/ 1.0 5.0))
                     (println! $now)
                     (collapse (test-superpose))
-                    (collapse (write_csv_wrapper (attentionalFocus) outputFile.csv))
+                    (collapse (write_csv_wrapper (attentionalFocus) outputFileTired.csv))
                     
                     (if (== $rest ())
                             (if (== $type insectSent)

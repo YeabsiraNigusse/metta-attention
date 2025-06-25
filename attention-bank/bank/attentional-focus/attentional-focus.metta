@@ -58,7 +58,7 @@
                         ()
                         (if $new
                             (let $wrote
-                                (write_csv_wrapper (attentionalFocus) output/output.csv)
+                                (write_csv_wrapper (attentionalFocus) output/outputTired.csv)
                                 (add-atom &newAtomInAV $atom)
                             )
                             ()
