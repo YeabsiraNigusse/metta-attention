@@ -4,7 +4,7 @@
     "AFB_DECAY": "0.05",
     "AFB_BOTTOM": "50.0",
     "MAX_AF_SIZE": "8",
-    "AFRentFrequency": "5.0",
+    "AFRentFrequency": "2.0",
     "FORGET_THRESHOLD": "0.05",
     "HEBBIAN_MAX_ALLOCATION_PERCENTAGE": "0.05",
     "LOCAL_FAR_LINK_RATIO": "10.0",

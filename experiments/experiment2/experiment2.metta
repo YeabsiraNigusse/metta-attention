@@ -30,7 +30,11 @@
 !(import! &poison metta-attention:experiments:experiment2:data:poison-sent)
 (collapse (match &insect (insect $x) $x))
 (collapse (match &poison (poison $x) $x))
-
+!(updateAttentionBank stiFundsBuffer 99900)
+!(updateAttentionBank ltiFundsBuffer 99900)
+!(updateAttentionBank targetSTI 99900)
+!(updateAttentionBank targetLTI 99900)
+!(updateAttentionParam AFRentFrequency 2.0)
 !(updateAttentionParam MAX_AF_SIZE 8)
 (=(spaceAdder) (get-atoms &tempspace)) 
 !(spaceAdder)
@@ -52,7 +56,7 @@
                     (stimulate $now 700)
                     (println! $now)
                     (collapse (test-superpose))
-                    (collapse (write_csv_wrapper (attentionalFocus) outputFile.csv))
+                    (collapse (write_csv_wrapper (attentionalFocus) outputFilewell.csv))
                     
                     (if (== $rest ())
                             (if (== $type insectSent)
