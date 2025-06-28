@@ -34,7 +34,7 @@
 !(updateAttentionBank ltiFundsBuffer 99900)
 !(updateAttentionBank targetSTI 99900)
 !(updateAttentionBank targetLTI 99900)
-!(updateAttentionParam AFRentFrequency 2.0)
+!(updateAttentionParam AFRentFrequency 0.5)
 !(updateAttentionParam MAX_AF_SIZE 8)
 (=(spaceAdder) (get-atoms &tempspace)) 
 !(spaceAdder)
@@ -56,7 +56,7 @@
                     (stimulate $now 700)
                     (println! $now)
                     (collapse (test-superpose))
-                    (collapse (write_csv_wrapper (attentionalFocus) outputFilewell.csv))
+                    (collapse (write_csv_wrapper (attentionalFocus) outputLower.csv))
                     
                     (if (== $rest ())
                             (if (== $type insectSent)

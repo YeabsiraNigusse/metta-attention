@@ -7,7 +7,7 @@ import sys
 if len(sys.argv) >= 2:
     FILE = sys.argv[1]
 else:
-    FILE = 'output/outputFilewell.csv'
+    FILE = 'output/outputLower.csv'
 df = pd.read_csv(FILE, parse_dates=['timestamp'])
 
 def create_category():
@@ -89,4 +89,4 @@ plt.legend(title='Category', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig("experiments/experiment2/plotOne.png")
+plt.savefig("experiments/experiment2/plotOther2.png")
