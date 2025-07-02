@@ -7,12 +7,12 @@ import sys
 if len(sys.argv) >= 2:
     FILE = sys.argv[1]
 else:
-    FILE = 'experiments/experiment2/output/output.csv'
+    FILE = 'experiments/Metta/experiment2/output/output.csv'
 df = pd.read_csv(FILE, parse_dates=['timestamp'])
 
 def create_category():
 
-    file_list = {"insect": "experiments/experiment2/data/insect-words.metta", "poison": "experiments/experiment2/data/poison-words.metta", "insecticide": "experiments/experiment2/data/insecticide-words.metta"}
+    file_list = {"insect": "experiments/Metta/experiment2/data/insect-words.metta", "poison": "experiments/Metta/experiment2/data/poison-words.metta", "insecticide": "experiments/Metta/experiment2/data/insecticide-words.metta"}
 
     word_category = {key: [] for key in file_list}
 
@@ -41,7 +41,7 @@ def read_params(param:str) -> str:
         all returns are of type str
     """
 
-    with open('experiments/experiment2/output/settings.json', 'r') as f:
+    with open('experiments/Metta/experiment2/output/settings.json', 'r') as f:
         setting_json = json.load(f)
 
     return setting_json[param]
@@ -89,4 +89,4 @@ plt.legend(title='Category', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig("experiments/experiment2/plot2.png")
+plt.savefig("experiments/Metta/experiment2/plot2.png")

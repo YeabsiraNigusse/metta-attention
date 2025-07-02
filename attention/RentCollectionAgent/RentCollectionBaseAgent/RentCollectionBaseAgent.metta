@@ -8,9 +8,10 @@
    (let*
       (
          ($funds (getAttentionBank  fundsSTI))
-         ($targetSTI (getAttentionParam TargetStiFunds))
-         ($stiFundsBuffer (getAttentionParam StiFundsBuffer))
+         ($targetSTI (getAttentionBank targetSTI))
+         ($stiFundsBuffer (getAttentionBank stiFundsBuffer ))
          ($diff (- $targetSTI $funds))
+         (() (println! ($diff rent diff)))
       )
       (if  (<= $diff 0)
             0.0
@@ -37,9 +38,10 @@
    (let*
       (
          ($funds (getAttentionBank fundsLTI))
-         ($targetLTI (getAttentionParam TargetLtiFunds))
-         ($ltiFundsBuffer (getAttentionParam LtiFundsBuffer))
+         ($targetLTI (getAttentionBank targetLTI))
+         ($ltiFundsBuffer (getAttentionBank ltiFundsBuffer))
          ($diff (- $targetLTI $funds))
+         (() (println! ($diff rent lti diff)))
       )
       (if (<= $diff 0)
             0.0
