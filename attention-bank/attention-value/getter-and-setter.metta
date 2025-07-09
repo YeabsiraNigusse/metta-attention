@@ -74,7 +74,7 @@
     (if (== (getValueType $pattern) %Undefined%)
         (add-atom &typeSpace (: $pattern (STV $mean $conf)))
         (let* ( ( $av (getAv $pattern))
-                ($_ (let $x (collapse (match &typeSpace (: $pattern $_) (: $pattern $_)))
+                ($_ (let $x (collapse (match &typeSpace ($pattern $_) ($pattern $_)))
                         (if (== $x ())
                             ()
                             (let $y (car-atom $x) (remove-atom &typeSpace $y))
