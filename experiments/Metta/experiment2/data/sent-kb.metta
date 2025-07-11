@@ -4,4 +4,3 @@
 (setStv (ASYMMETRIC_HEBBIAN_LINK  aconite  aldicarb) (0.253 0.9))
 (setStv (SimilarityLink  acetamiprid  Botulinum) (0.075 0.9))
 (setStv (ASYMMETRIC_HEBBIAN_LINK  alcohol  acetamiprid) (0.253 0.9))
-
