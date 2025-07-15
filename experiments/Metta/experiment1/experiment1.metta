@@ -36,7 +36,7 @@
 !(spaceAdder)
 
 ; write the params to a file
-!(updateAttentionParam MAX_AF_SIZE 10.0)
+!(updateAttentionParam MAX_AF_SIZE 15.0)
 !(updateAttentionBank targetSti 1000.0)
 !(updateAttentionBank targetLti 1000.0)
 !(updateAttentionBank stiFundsBuffer 1000.0)
