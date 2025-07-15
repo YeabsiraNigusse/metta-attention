@@ -110,30 +110,10 @@
 (: getValueType (-> Atom Type))
 (= (getValueType $pattern) 
 	(let $a 
-		(collapse (getValueType-helper $pattern))
+		(collapse (match &typeSpace ($pattern $value) $value))
 		(if (== $a ())
 			%Undefined%
 			(car-atom $a)
-		)
-	)
-)
-
-(: getValueType-helper (-> Atom Type))
-(= (getValueType-helper $pattern) 
-	(let $a 
-		(match &typeSpace ($pattern $value) $value) 
-		(unify $a  
-			(AV $sti $lti $vlti) 
-			(AV $sti $lti $vlti)
-			(unify $a
-				(STV $mean $conf)
-				(STV $mean $conf)
-				(unify $a
-					((STV $mean $conf) (AV $sti $lti $vlti))
-					((STV $mean $conf) (AV $sti $lti $vlti))
-					(empty)
-				)
-			)
 		)
 	)
 )
@@ -232,6 +212,9 @@
     )
 )
 
+;; globalIncomingSetByType a function that takes in an a pattern and retrives
+;; all links it is an incoming set in and the predicate of the link is a defined type
+;; used in Forgetting agent
 (= (globalIncomingSetByType $atom $type)
 	(collapse
 		(superpose   
@@ -243,6 +226,9 @@
 	)
 )
 
+
+;; globalIncomingSetByType a function that takes in an a pattern and retrives
+;; all links it is an incoming set in
 (= (globalIncomingSetwithoutType $atom)
     (collapse 
         (superpose   
@@ -254,6 +240,8 @@
     )
 )
 
+;; remoeTypeSpace a function that removes an atom from the typeSpace
+;; used in Forgettingagent
 (: removeTypeSpace (-> Atom empty))
 (= (removeTypeSpace $atom) 
 	(let $a 
@@ -271,7 +259,7 @@
 )
 
 
-
+;; used to return all atoms that have an stv or an AV in typespace
 (: getAtomsInTypeSpace-helper (-> List))
 (= (getAtomsInTypeSpace-helper) 
 	(let $a 
@@ -293,6 +281,7 @@
 	(collapse (getAtomsInTypeSpace-helper))
 )
 
+;; counts all atoms in the TypeSpace
 (= (countAtomsInTypeSpace)
     (let $atoms
         (getAtomsInTypeSpace)
