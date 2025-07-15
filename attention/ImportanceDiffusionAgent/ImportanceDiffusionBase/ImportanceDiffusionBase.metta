@@ -9,17 +9,18 @@
 
 ; (: diffuseAtom (-> Atom Grounded Symbol Atom))
 (= (diffuseAtom $atom $space $AForWA)
-    (let*
+    (let* 
         (
-            ($incidentAtoms (collapse (incidentAtoms $atom $space)))
+            ($incidentAtoms (collapse (getAllIncomingSets $atom $space)))
+            ($filtered (collapse (incidentAtoms $atoms $space $incidentAtoms)))
             ($foset (if (== (get-metatype $atom) Expression)
                         (getOutGoingAtoms $atom)
                         ()
                     )
             )
             ($oset (collapse (filteroset $foset)))
-            ($incidentAndoset (concatTuple $incidentAtoms $oset))
-            ($iset (collapse (match $space (: (ASYMMETRIC_HEBBIAN_LINK $atom $b) $a) (ASYMMETRIC_HEBBIAN_LINK $atom $b))))
+            ($incidentAndoset (concatTuple $filtered $oset))
+            ($iset (collapse (getheb $atom ASYMMETRIC_HEBBIAN_LINK $incidentAtoms)))
             ($hebbianAdjacentAtoms (collapse (hebbianAdjacentAtoms $iset $atom)))
             ($probabilityVectorIncident (collapse (probabilityVectorIncident $incidentAndoset)))
             ($probabilityVectorHebbianAjacent (collapse (probabilityVectorHebbianAjacent $atom $hebbianAdjacentAtoms)))
@@ -41,9 +42,9 @@
                         )
                     )
             )
-        )
+        ) 
         ($atom $atomToReceive $stiGiven)
-    )
+    )    
 )
 
 ;; This function is used to remove ASYMMETRIC_HEBBIAN_LINK that might be 
@@ -72,11 +73,11 @@
 ;;            $space: The space that incomingSets will be taken from
 ;; Return : The incident atoms of the given atom
 
-(: incidentAtoms (-> Atom Grounded Atom))
-(= (incidentAtoms $atom $space)
+(: incidentAtoms (-> Atom Grounded Expression Atom))
+(= (incidentAtoms $atom $space $iset)
     (let*
         (
-            ($incomingSet (getAllIncomingSets $atom $space))
+            ($incomingSet (superpose $iset))
             ($filtered
                 (if (== (car-atom $incomingSet) ASYMMETRIC_HEBBIAN_LINK) ;; Need to be Removed
                     (empty)
@@ -88,6 +89,29 @@
             )
         )
         $filtered
+    )
+)
+
+;; This function will take an expresion atom and retun those that have a predicate
+;; similar to the varible set as $type and atom as a source
+;; Parameters 
+;;      $atom: and atom that will is expected to be source
+;;      $type: predicate of the link eg ASYMMETRIC_HEBBIAN_LINK
+;;      $iset: an expression atom of links 
+;; return: links that match the above criteria (non-deterministic)
+(= (getheb $atom $type $iset) 
+    (let* 
+        (
+            ($vals (superpose $iset))
+            ($out (unify
+                    $vals
+                    ($type $atom $b)
+                    ($type $atom $b)
+                    (empty)
+                )
+            )
+        )
+        $out
     )
 )
 
