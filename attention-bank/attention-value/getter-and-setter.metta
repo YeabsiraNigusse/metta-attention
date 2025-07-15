@@ -1,9 +1,12 @@
 !(bind! &typeSpace (new-space))
 
-; set_av function accepts a pattern/node with the attention values
-; and set the attention value to the pattern/node.
-;
-; i.e !(set_av A (399 400 1))
+; setAv function accepts a pattern (it could be a symbol or an expression) and attention values(contain STI, LTI and VLTI)
+; and set the attention value as a type for the pattern. 
+; then the pattern will be stored with attention value type in a space called typespace.
+
+; i.e !(setAv Animal (399 400 1))
+; we can get the type of the symbol animal using the function getValueType an it returns (AV 399 400 1).
+; which means the atom called Animal now has STI = 399, LTI = 400 and VLTI = 1
 
 (: setAv (-> Atom (Number Number Number) Atom))
 (= (setAv $pattern ($sti $lti $vlti))
@@ -39,27 +42,23 @@
            ($updater (attentionValueChanged $pattern $newstifund $newltifund))  ; Update attentional focus and global paremeter
     )
    ()
-)
-)
+))
 
- ; getAv function accepts a pattern/node and returns the attention
- ; value attached to the pattern/node.
- ;
+ ; getAv function accepts a pattern/atom (it could be a symbol or an expression) and 
+ ; returns the attention value attached to the atom.
+ 
  ; i.e !(getAv A)  output: (AV 400 400 1)
 
 (: getAv (-> Atom AV))
 (= (getAv $pattern)
-    (if (== (get-metatype $pattern) Expression)
         (case (getValueType $pattern)
-            (( (AV $a $b $c) (AV $a $b $c))
-                    ( ( (STV $a $b) (AV $x $y $z)) (AV $x $y $z))
-                    ($else %Undefined%))
+          (
+            ( (AV $a $b $c) (AV $a $b $c))
+            ( ((STV $a $b) (AV $x $y $z)) (AV $x $y $z))
+            ($else %Undefined%)
+            )
         )
-        (case (getValueType $pattern)
-                (( (AV $a $b $c) (AV $a $b $c))
-                    ( ( (STV $a $b) (AV $x $y $z)) (AV $x $y $z))
-                    ($else %Undefined%)))
-    )
+    
 )
 
 
@@ -77,8 +76,9 @@
                 ($_ (let $x (collapse (match &typeSpace ($pattern $_) ($pattern $_)))
                         (if (== $x ())
                             ()
-                            (let $y (car-atom $x) (remove-atom &typeSpace $y))
-                            ))))
+                            (remove-atom &typeSpace $x)
+                            )))
+              )
             (if (== $av %Undefined%)
                 (add-atom &typeSpace ($pattern (STV $mean $conf)))
                 (add-atom &typeSpace ($pattern ( (STV $mean $conf) $av)))))
@@ -92,19 +92,14 @@
 
 (: getStv (-> Atom STV))
 (= (getStv $pattern)
-    (if (== (get-metatype $pattern) Expression)
-            (case (let $a (collapse (let $x (getValueType $pattern) (collapse (superpose $x)))) (index-atom $a 0))
-                (( (STV $x $y) (STV $x $y) )
-                ( ( (STV $x $y) (AV $a $b $c)) (STV $x $y))
-                ($else %Undefined%))
-        )
         (case (getValueType $pattern)
-            (
-                ( (STV $x $y) (getValueType $pattern) )
-                ( ( (STV $x $y) (AV $a $b $c)) (STV $x $y))
-                ($else %Undefined%))
+          (
+            ( (STV $a $b) (STV $a $b))
+            ( ((STV $a $b) (AV $x $y $z)) (STV $a $b))
+            ($else %Undefined%)
+            )
         )
-    )
+    
 )
 
 (: getValueType (-> Atom Type))
@@ -124,8 +119,8 @@
 (: getMean (-> Atom Number))
 (= (getMean $pattern)
     (case (getStv $pattern)
-        ((%Undefined% 0)
-        ((STV $mean $conf) $mean))
+            ((%Undefined% 0)
+            ((STV $mean $conf) $mean))
     )
 )
 
@@ -139,11 +134,11 @@
     )
 )
 
-; getSTI retrieves STI from a pattern
-; i.e !(getSTI A)  output: 400 
+; getSti retrieves STI from a pattern
+; i.e !(getSti A)  output: 400 
 
-(: getSTI (-> Atom Number))
-(= (getSTI $pattern)
+(: getSti (-> Atom Number))
+(= (getSti $pattern)
     (case (getAv $pattern)
         ((%Undefined% 0)
         ((AV $sti $lti $vlti) $sti))
@@ -152,22 +147,22 @@
 )
 
 
-; getLTI retrieves LT from a pattern
-; i.e !(getLTI A)  output: 400 
+; getLti retrieves LT from a pattern
+; i.e !(getLti A)  output: 400 
 
-(: getLTI (-> Atom Number))
-(= (getLTI $pattern)
+(: getLti (-> Atom Number))
+(= (getLti $pattern)
     (case (getAv $pattern)
         ((%Undefined% 0)
         ((AV $sti $lti $vlti) $lti))
     )
 )
 
-; getVLTI retrieves VLTI from a pattern
-; i.e !(getLTI A)  output: 1
+; getVlti retrieves VLTI from a pattern
+; i.e !(getLti A)  output: 1
 
-(: getVLTI (-> Atom Number))
-(= (getVLTI $pattern)
+(: getVlti (-> Atom Number))
+(= (getVlti $pattern)
     (case (getAv $pattern)
         ((%Undefined% 0)
         ((AV $sti $lti $vlti) $vlti)
@@ -177,35 +172,35 @@
 )
 
 
-(= (getType $pattern) (get-type-space &typeSpace $pattern))
+; (= (getType $pattern) (get-type-space &typeSpace $pattern))
 
 ;;setSTI function accepts a pattern/node with an Sti value to replace the original
 ;;and set the Sti to the pattern/node.
-; i.e !(setSTI A 500)
-(: setSTI (-> Atom Number Atom)) 
-(= (setSTI $pattern $newSTI)
+; i.e !(setSti A 500)
+(: setSti (-> Atom Number Atom)) 
+(= (setSti $pattern $newSTI)
     (case (getAv $pattern)
         ((%Undefined% (setAv $pattern ($newSTI 0 0)))
         ((AV $sti $lti $vlti) (setAv $pattern ($newSTI $lti $vlti))))
     )
 )
 
-;;setLTI function accepts a pattern/node with an Lti value to replace the original
+;;setLti fnction accepts a pattern/node with an Lti value to replace the original
 ;;and set the Lti to the pattern/node.
-; i.e !(setLTI A 500)
-(: setLTI (-> Atom Number Atom)) 
-(= (setLTI $pattern $newLTI)
+; i.e !(setLti A 500)
+(: setLti (-> Atom Number Atom)) 
+(= (setLti $pattern $newLTI)
     (case (getAv $pattern)
         ((%Undefined% (setAv $pattern  (0 $newLTI 0)))
         ((AV $sti $lti $vlti) (setAv $pattern ($sti $newLTI $vlti))))
     )
 )
 
-;;setVLTI function accepts a pattern/node with an VLti value to replace the original
+;;setVlti fnction accepts a pattern/node with an VLti value to replace the original
 ;;and set the VLti to the pattern/node.
-; i.e !(setVLTI A 500)
-(: setVLTI (-> Atom Number Atom)) 
-(= (setVLTI $pattern $newVLTI)
+; i.e !(setVlti A 500)
+(: setVlti (-> Atom Number Atom)) 
+(= (setVlti $pattern $newVLTI)
     (case (getAv $pattern)
         ((%Undefined% (setAv $pattern  (0 0 $newVLTI)))
         ((AV $sti $lti $vlti) (setAv $pattern ($sti $lti $newVLTI))))
