@@ -1,6 +1,6 @@
 !(bind! &attentionalFocus (new-space))
 !(bind! &newAtomInAV (new-space))
-(= (AttentionalFocus) &attentionalFocus)
+(= (attentionalFocus) &attentionalFocus)
 (= (newAtomInAV) &newAtomInAV)
 
 (= (maxAFSize) 1000)
@@ -456,11 +456,6 @@
         $randomAtom
         )
     )
-)
-
-
-(= (attentionalFocus)
-    &attentionalFocus
 )
 
 
