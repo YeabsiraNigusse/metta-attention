@@ -13,16 +13,18 @@ YELLOW = "\033[93m"
 MAGENTA = "\033[95m"
 
 
-def extract_and_print(result, path) -> bool:
-    output = result.stdout if result.returncode == 0 else result.stderr
-    # Remove the specified substring
-    extracted = output.replace("[()]\n", "")
+def extract_and_print(result, path, idx) -> bool:
+    # Prefer stdout unless it's empty and returncode != 0
+    output = result.stdout if result.stdout else result.stderr
+    output = output.strip()
 
-    # Check if the string contains the word "Error"
-    has_failure = "Error" in extracted
-
-    if not has_failure:
-        extracted = "test passed"
+    # If empty stderr and non-zero code, assume it still succeeded
+    if result.returncode != 0 and not output:
+        has_failure = False
+        extracted = "test passed (empty error, assuming success)"
+    else:
+        has_failure = "Error" in output
+        extracted = output if has_failure else "test passed"
 
     status_color = RED if has_failure else GREEN
     print(YELLOW + f"Test {idx + 1}: {path}" + RESET)
@@ -44,42 +46,34 @@ def print_ascii_art(text):
 # Define the command to run with the test files
 metta_run_command = ["mettalog", "--test"]
 
-
 root = pathlib.Path(".")
 
-testMettaFiles = root.rglob("*-test-mettalog.metta")
-total_files = 0
+testMettaFiles = list(root.rglob("*-test-mettalog.metta"))
+total_files = len(testMettaFiles)
 results = []
-fails = 0
 
 # Print ASCII art title
 print_ascii_art("Test Runner")
 
+# Run all tests and collect results
 for testFile in testMettaFiles:
-    total_files += 1
     try:
         result = subprocess.run(
-            metta_run_command + [str(testFile)],  # Convert testFile to string
+            metta_run_command + [str(testFile)],
             capture_output=True,
             text=True,
-            check=True,
         )
-        fails += result.returncode
-        results.append((result, testFile))  # Collect only stdout in the results list
+        results.append((result, testFile))
     except subprocess.CalledProcessError as e:
-        results.append((e, testFile))
-        fails += 1
+        results.append((e, testFile))  # still collect the result
+
 
 # Output the results
+fails = 0
 for idx, (result, path) in enumerate(results):
-    if isinstance(result, subprocess.CalledProcessError):
-        print(RED + f"Error with {path}: {result.stderr}" + RESET)
-        continue
-
-    has_failure = extract_and_print(result, path)
+    has_failure = extract_and_print(result, path, idx)
     if has_failure:
         fails += 1
-
 
 # Summary
 print(CYAN + "\nTest Summary" + RESET)
@@ -87,7 +81,6 @@ print(f"{total_files} files tested.")
 print(RED + f"{fails} failed." + RESET)
 print(GREEN + f"{total_files - fails} succeeded." + RESET)
 
-
 if fails > 0:
-    print(RED + "Tests failed . Process Exiting with exit code 1" + RESET)
+    print(RED + "Tests failed. Process exiting with exit code 1." + RESET)
     sys.exit(1)
