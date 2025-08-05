@@ -70,4 +70,4 @@ jobs:
       - name: Run MeTTaLog Tests
         run: |
           cd ../metta-attention
-          python scripts/run-tests.py
+          python3 scripts/run-tests.py
