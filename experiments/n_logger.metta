@@ -1,29 +1,43 @@
-; ============================================================================
-; CSV LOGGER USING SHELL COMMANDS
-; ============================================================================
+(register-module! ../../metta-attention)
+(import! &self metta-attention:attention:AttentionParam)
+!(register-module! ../experiments)
 
-(= (start_log $attentionParam $space $file)
-    (let $params (collapse (get-atoms $attentionParam))
-        ; Clear and initialize CSV using Python script with correct path
-        ((py-atom os.system) "cd /home/hojiwaq/Desktop/metta-attention/metta-attention && python3 experiments/csv_logger.py clear")
+
+!(bind! start_logger (py-atom log.start_logger))
+!(bind! save_params (py-atom log.save_params))
+!(bind! write_to_csv (py-atom log.write_to_csv))
+
+
+(= (write_csv_wrapper $space)
+    (let $snapshot
+        (collapse (AFsnapshot $space))
+        (let $fsnapshot
+            (format-args "{}" ($snapshot))
+            ; (println! $fsnapshot)
+            (write_to_csv $_ $fsnapshot)
+        )
     )
 )
 
-(= (log_word $word $sti $lti)
-    ; Log word to CSV and show in terminal - simplified approach
-    ((py-atom os.system) "cd /home/hojiwaq/Desktop/metta-attention/metta-attention && python3 experiments/csv_logger.py log test 700.0 700.0")
-    (println! $word)
+(= (AFsnapshot $space)
+    (let* 
+        (
+            ($atom (get-atoms $space))
+            ($av (getAv $atom))
+        ) 
+        ($atom $av) 
+    )
 )
 
-(= (log_word $word)
-    ; Log with default values - simplified
-    ((py-atom os.system) "cd /home/hojiwaq/Desktop/metta-attention/metta-attention && python3 experiments/csv_logger.py log test 700.0 700.0")
-    (println! $word)
-)
-
-(= (log_attention_focus $space)
-    (let $atoms (collapse (get-atoms $space))
-        ; Log attention focus data
-        (println! "Attention focus logged")
+(= (start_log $attentionParam $file)
+    (let $param 
+        (start_logger $_ $file)
+        (let $val
+            (collapse (get-atoms $attentionParam))
+            (let $fvals
+                (format-args "{}" ($val))
+                (save_params $_ $fvals)
+            )
+        )
     )
 )
