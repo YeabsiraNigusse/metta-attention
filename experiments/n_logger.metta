@@ -2,10 +2,12 @@
 (import! &self metta-attention:attention:AttentionParam)
 !(register-module! ../experiments)
 
+!(python-import "experiments.log" log)
 
 !(bind! start_logger (py-atom log.start_logger))
 !(bind! save_params (py-atom log.save_params))
 !(bind! write_to_csv (py-atom log.write_to_csv))
+
 
 
 (= (write_csv_wrapper $space)
