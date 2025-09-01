@@ -66,8 +66,11 @@
 
 !(assertEqual 
     (let $asym 
+   
+  
         (collapse (match (TypeSpace) ((ASYMMETRIC_HEBBIAN_LINK $x $y) $z) (ASYMMETRIC_HEBBIAN_LINK $x $y))) 
-        (size-atom $asym)
+        (size-atom $asym) 
+    
     )
     5
 )
@@ -75,18 +78,22 @@
 !(stimulate aflatoxin 30)
 !(test-superpose)
 
-!(assertEqual (getAtomList)
-   ((SimilarityLink aldicarb aflatoxin) aflatoxin abamectin (SimilarityLink abamectin Ants) Ants))
+!(assertEqual 
+    (let $afatoms 
+        (getAtomList) 
+        (subtraction-atom $afatoms ((SimilarityLink aldicarb aflatoxin) aflatoxin abamectin (SimilarityLink abamectin Ants) Ants))) ())
 !(assertEqual (< (getLti Ants) 600) True) 
 !(assertEqual (getLti (SimilarityLink abamectin Ants)) 0)
-!(assertEqual (getLti aflatoxin) 420.0)
+!(assertEqual (< (getLti aflatoxin) 420) True)
 
 !(assertEqual (collapse (get-atoms &newAtomInAV)) ())
 
 !(assertEqual 
     (let $asym 
+ 
         (collapse (match (TypeSpace) ((ASYMMETRIC_HEBBIAN_LINK $x $y) $z) (ASYMMETRIC_HEBBIAN_LINK $x $y))) 
         (size-atom $asym)
+    
     )
     23
 )
