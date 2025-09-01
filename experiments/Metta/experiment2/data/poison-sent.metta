@@ -1,1 +1,1 @@
-(poisonSent (Botulinum avoids ))
+(poisonSent (Botulinum ))

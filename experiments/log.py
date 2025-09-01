@@ -18,7 +18,7 @@ def init_logger_state():
     }
 
 # Initialize global state
-LOGGER_STATE = init_logger_state()
+#LOGGER_STATE = init_logger_state()
 
 # -----------------------
 # parse_path  (your Final Improved Version)
@@ -226,23 +226,32 @@ def write_to_csv(snapshot):
             raise ValueError("Unbalanced parentheses in snapshot string")
 
         # Parse entries into dicts
+                # Parse entries into dicts
         parsed_snapshot = []
         for item in entries:
-            # item looks like: (Ants (AV 7007.007007007007 7007.007007007007 0))
+            # item looks like: (EntityOrLink (AV ...))
             body = item[1:-1].strip()
-            parts = re.split(r"\s+", body, maxsplit=1)
-            entity = parts[0]
-            value1, value2 = 0, 0
-            if len(parts) > 1:
-                # parts[1] looks like: (AV 7007.007007007007 7007.007007007007 0)
-                inner = parts[1].strip()
-                inner = inner[1:-1].strip()  # remove parentheses
-                inner_parts = inner.split()[1:]  # skip "AV"
-                if len(inner_parts) >= 2:
-                    value1 = float(inner_parts[0])
-                    value2 = float(inner_parts[1])
-            parsed_snapshot.append({"entity": entity, "value1": value1, "value2": value2})
+
+            # Split into entity and value-part
+            match = re.match(r"^(.*)\s+\(AV\s+([^\)]+)\)$", body)
+            if not match:
+                # Could not parse, skip or log warning
+                print(f"WARNING: Could not parse snapshot entry: {body}")
+                continue
+
+            entity = match.group(1).strip()
+            values = match.group(2).strip().split()
+
+            value1 = float(values[0]) if len(values) > 0 else 0.0
+            value2 = float(values[1]) if len(values) > 1 else 0.0
+
+            parsed_snapshot.append({
+                "entity": entity,
+                "value1": value1,
+                "value2": value2
+            })
         snapshot = parsed_snapshot
+
 
     # Ensure snapshot is a list/tuple now
     if not isinstance(snapshot, (list, tuple)):
