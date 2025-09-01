@@ -1,4 +1,4 @@
-from path import Path
+from pathlib import Path
 from datetime import datetime
 import csv
 import json
@@ -17,7 +17,8 @@ def init_logger_state():
         "directory_arg": "",        # str passed into start_logger
     }
 
-# LOGGER_STATE = init_logger_state()
+# Initialize global state
+LOGGER_STATE = init_logger_state()
 
 # -----------------------
 # parse_path  (your Final Improved Version)
