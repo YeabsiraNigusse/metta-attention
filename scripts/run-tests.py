@@ -152,3 +152,4 @@ print(GREEN + f"{total_files - fails} succeeded." + RESET)
 if fails > 0:
     print(RED + "Tests failed. Process Exiting with exit code 1" + RESET)
     sys.exit(1)
+
