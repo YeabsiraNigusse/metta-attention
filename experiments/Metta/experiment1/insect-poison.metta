@@ -34,7 +34,7 @@
 !(spaceAdder)
 
 ; write the params to a file
-!(updateAttentionParam MAX_AF_SIZE 1.0)
+!(updateAttentionParam MAX_AF_SIZE 10.0)
 !(updateAttentionParam TARGET_STI 1000.0) 
 !(updateAttentionParam TARGET_LTI 1000.0) 
 !(updateAttentionParam STI_FUNDS_BUFFER 1000.0) 
@@ -45,28 +45,29 @@
 !(start_log (attentionParam) experiments/Metta/experiment1)
 
 (= (insectPoisonExp $maxim $space $type)
-   (
-     (if (< $maxim 0)
-         finished
-           (let* (
-             ($words (collapse (match $space ($type $x) $x)))
-             ($randInt1 (random-int 0 (size-atom $words)))
-             ($randInt2 (random-int 0 (size-atom $words)))
-             ($randomWord1 (index-atom $words $randInt1))
-           )
-           (
-                (stimulate $randomWord1 10)
-                (println! $randomWord1)
-                (collapse(test-superpose))
-                (let $newMaxim (- $maxim 1)
-                    (if (> $maxim 2)
-                         (insectPoisonExp $newMaxim  &insect insect)
-                         (insectPoisonExp $newMaxim  &poison poison)
+    (
+        (if (< $maxim 0)
+            finished
+            (let* 
+                (
+                    ($words (collapse (match $space ($type $x) $x)))
+                    ($randInt1 (random-int 0 (size-atom $words)))
+                    ($randInt2 (random-int 0 (size-atom $words)))
+                    ($randomWord1 (index-atom $words $randInt1))
+                )
+                (
+                    (stimulate $randomWord1 30)
+                    (println! ($type $randomWord1))
+                    (collapse(test-superpose))
+                    (let $newMaxim (- $maxim 1)
+                        (if (> $maxim 2)
+                            (insectPoisonExp $newMaxim  &insect insect)
+                            (insectPoisonExp $newMaxim  &poison poison)
+                        )
                     )
                 )
-           )
-           )
-      )    
+            )
+        )     
     )
 )
 
