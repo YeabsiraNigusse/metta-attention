@@ -1,1 +1,1 @@
-(insectSent (Ants farm aphids beanfly armyworms .))
+(insectSent (Ants ))

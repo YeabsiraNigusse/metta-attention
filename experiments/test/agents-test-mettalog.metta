@@ -84,7 +84,7 @@
         (subtraction-atom $afatoms ((SimilarityLink aldicarb aflatoxin) aflatoxin abamectin (SimilarityLink abamectin Ants) Ants))) ())
 !(assertEqual (< (getLti Ants) 600) True) 
 !(assertEqual (getLti (SimilarityLink abamectin Ants)) 0)
-!(assertEqual (< (getLti aflatoxin) 420.0) True)
+!(assertEqual (< (getLti aflatoxin) 420) True)
 
 !(assertEqual (collapse (get-atoms &newAtomInAV)) ())
 
