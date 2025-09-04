@@ -1,40 +1,59 @@
-!(register-module! ../../../../metta-attention)
-!(import! &self metta-attention:attention:ForgettingAgent/ForgettingAgent)
-!(import! &self metta-attention:attention:AttentionParam)
-!(import! &self metta-attention:attention:RentCollectionAgent/RentCollectionBaseAgent/RentCollectionBaseAgent)
-!(import! &self metta-attention:attention:RentCollectionAgent/WARentCollectionAgent/WARentCollectionAgent)
-!(import! &self metta-attention:attention:RentCollectionAgent/AFRentCollectionAgent/AFRentCollectionAgent)
-!(import! &self metta-attention:attention:ImportanceDiffusionAgent/ImportanceDiffusionBase/ImportanceDiffusionBase)
-!(import! &self metta-attention:attention:ImportanceDiffusionAgent/WAImportanceDiffusionAgent/WAImportanceDiffusionAgent)
-!(import! &self metta-attention:attention:ImportanceDiffusionAgent/AFImportanceDiffusionAgent/AFImportanceDiffusionAgent)
-!(import! &self metta-attention:attention:HebbianUpdatingAgent/HebbianUpdatingAgent)
-!(import! &self metta-attention:attention:HebbianCreationAgent/HebbianCreationAgent)
-!(import! &self metta-attention:attention:AttentionParam)
-!(import! &self metta-attention:attention:Neighbors)
-!(import! &self metta-attention:experiments:runner-Def)
+; ; ============================================================================
+; ; EXPERIMENT2 METTALOG - OPTIMIZED VERSION
+; ; ============================================================================
+; ; Economic Attention Networks (ECAN) experiment demonstrating attention
+; ; allocation dynamics with insect-to-poison topic shifting
+; ;
+; ; This experiment processes sentences that transition from insect-related
+; ; topics to poison-related topics, using ECAN framework for attention
+; ; allocation and diffusion between concepts.
+; ; ============================================================================
 
-!(import! &self metta-attention:attention-bank:utilities/helper-functions)
-!(import! &self metta-attention:attention-bank:utilities/recentVal)
+; ; Import all required dependencies from centralized import file
+ !(import! &self imports_mettalog)
 
-!(import! &self metta-attention:attention-bank:attention-value/getter-and-setter)
-
-!(import! &self metta-attention:attention-bank:bank/atom-bins/get-min-max-content)
-!(import! &self metta-attention:attention-bank:bank/atom-bins/atombins)
-!(import! &self metta-attention:attention-bank:bank/attention-bank)
-!(import! &self metta-attention:attention-bank:bank/attentional-focus/attentional-focus)
-!(import! &self metta-attention:attention-bank:bank/importance-index/importance-index)
-!(import! &self metta-attention:attention-bank:bank/stochastic-importance-diffusion/stochastic-importance-diffusion)
+; ; ============================================================================
+; ; EXPERIMENT CONFIGURATION
+; ; ============================================================================
 !(import! &tempspace metta-attention:experiments:Metta/experiment2/data/sent-kb)
 !(import! &insect metta-attention:experiments:Metta/experiment2/data/insect-sent)
 !(import! &poison metta-attention:experiments:Metta/experiment2/data/poison-sent)
 !(import! &self metta-attention:experiments:logger)
 
-!(updateAttentionParam STI_FUNDS_BUFFER 99900)
-!(updateAttentionParam LTI_FUNDS_BUFFER 99900)
-!(updateAttentionParam TARGET_STI 99900)
-!(updateAttentionParam TARGET_LTI 99900)
-!(updateAttentionParam AFRentFrequency 2.0)
-!(updateAttentionParam MAX_AF_SIZE 12)
+; ============================================================================
+; MEMORY-OPTIMIZED ATTENTION PARAMETERS
+; ============================================================================
+; These parameters are specifically tuned to prevent memory leaks and CPU overload
+; while maintaining proper attention dynamics
+
+; ULTRA-AGGRESSIVE MEMORY OPTIMIZATION FOR METTALOG
+; These parameters are specifically tuned to prevent exponential memory growth
+; that occurs when processing multiple sentences sequentially
+
+; Minimal fund management - drastically reduced for Mettalog compatibility
+!(updateAttentionParam STI_FUNDS_BUFFER 100)
+!(updateAttentionParam LTI_FUNDS_BUFFER 100)
+!(updateAttentionParam TARGET_STI 50)
+!(updateAttentionParam TARGET_LTI 50)
+
+; Tight attention focus - prevent memory explosion
+!(updateAttentionParam MIN_AF_SIZE 1)
+!(updateAttentionParam MAX_AF_SIZE 3)
+!(updateAttentionParam AFB_DECAY 0.5)
+!(updateAttentionParam AFB_BOTTOM 1.0)
+
+; Strict link control - critical for preventing exponential growth
+!(updateAttentionParam MAX_LINK_NUM 20.0)
+!(updateAttentionParam MAX_SPREAD_PERCENTAGE 0.01)
+!(updateAttentionParam DIFFUSION_TOURNAMENT_SIZE 2.0)
+
+; Aggressive cleanup - maximum frequency
+!(updateAttentionParam AFRentFrequency 0.5)
+!(updateAttentionParam DEFAULT_K 20)
+
+; Additional memory control parameters
+!(updateAttentionParam FORGET_THRESHOLD 0.1)
+!(updateAttentionParam HEBBIAN_MAX_ALLOCATION_PERCENTAGE 0.01)
 (= (spaceAdder) (get-atoms &tempspace))
 !(spaceAdder)
 
@@ -52,7 +71,8 @@
                     
                 )
                 (
-                    (stimulate $now 700)
+                    ; Ultra-low stimulation for Mettalog memory management
+                    (stimulate $now 25)
                     (println! $now)
                     (collapse (test-superpose))
                     (if (== $rest ())

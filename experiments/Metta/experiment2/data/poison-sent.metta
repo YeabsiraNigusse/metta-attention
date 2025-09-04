@@ -1,1 +1,1 @@
-(poisonSent (Botulinum ))
+(poisonSent (Botulinum avoids alcohol ammonia aconite aflatoxin .))
