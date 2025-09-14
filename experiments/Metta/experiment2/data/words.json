@@ -7,16 +7,22 @@
         "aphids",
         "armyworms",
         "armyworm",
-        "beanfly"
+        "beanfly",
+        "farm",
+        "formicidae",
+        "wasps"
     ],
     "poison": [
         "Botulinum",
+        "avoids",
         "aconite",
         "aflatoxin",
         "alcohol",
         "ammonia",
         "arsenic",
-        "aspirin"
+        "aspirin",
+        "carcinogens",
+        "molds"
     ],
     "insecticide": [
         "abamectin",
