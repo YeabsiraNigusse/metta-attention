@@ -31,34 +31,26 @@
 ; that occurs when processing multiple sentences sequentially
 
 ; Minimal fund management - drastically reduced for Mettalog compatibility
-!(updateAttentionParam STI_FUNDS_BUFFER 100)
-!(updateAttentionParam LTI_FUNDS_BUFFER 100)
-!(updateAttentionParam TARGET_STI 50)
-!(updateAttentionParam TARGET_LTI 50)
+!(updateAttentionParam STI_FUNDS_BUFFER 10000)
+!(updateAttentionParam LTI_FUNDS_BUFFER 10000)
+!(updateAttentionParam TARGET_STI 10000)
+!(updateAttentionParam TARGET_LTI 10000)
+!(updateAttentionParam FUNDS_STI 15000) 
+!(updateAttentionParam FUNDS_LTI 15000) 
 
 ; Tight attention focus - prevent memory explosion
-!(updateAttentionParam MIN_AF_SIZE 1)
-!(updateAttentionParam MAX_AF_SIZE 3)
-!(updateAttentionParam AFB_DECAY 0.5)
-!(updateAttentionParam AFB_BOTTOM 1.0)
-
-; Strict link control - critical for preventing exponential growth
-!(updateAttentionParam MAX_LINK_NUM 20.0)
-!(updateAttentionParam MAX_SPREAD_PERCENTAGE 0.01)
-!(updateAttentionParam DIFFUSION_TOURNAMENT_SIZE 2.0)
+!(updateAttentionParam MAX_AF_SIZE 10)
+!(updateAttentionParam MAX_SPREAD_PERCENTAGE 0.60)
 
 ; Aggressive cleanup - maximum frequency
-!(updateAttentionParam AFRentFrequency 0.5)
-!(updateAttentionParam DEFAULT_K 20)
+!(updateAttentionParam AFRentFrequency 5.0)
+(updateAttentionParam HEBBIAN_MAX_ALLOCATION_PERCENTAGE 0.51)
 
-; Additional memory control parameters
-!(updateAttentionParam FORGET_THRESHOLD 0.1)
-!(updateAttentionParam HEBBIAN_MAX_ALLOCATION_PERCENTAGE 0.01)
 (= (spaceAdder) (get-atoms &tempspace))
 !(spaceAdder)
 
 ; write the params to a file
-!(start_log (attentionParam) eexperimentss)
+!(start_log (attentionParam) experiments/Metta/experiment2)
 
 (= (insectPoisonReadExp $space $type $expr)
     (
@@ -70,26 +62,21 @@
                     ($rest (cdr-atom $expr))
                     
                 )
-                (
-                    ; Ultra-low stimulation for Mettalog memory management
-                    (stimulate $now 25)
-                    (println! $now)
-                    (collapse (test-superpose))
+                (superpose (
                     (if (== $rest ())
-                            (if (== $type insectSent)
-                                (insectPoisonReadExp &poison poisonSent (match &poison (poisonSent $x) $x))
-                                finished
+                        (if (== $type poisonSent)
+                             (insectPoisonReadExp &insect insectSent (match &insect (insectSent $x) $x))
+                             finished
+                        )
+                        (insectPoisonReadExp $space $type $rest)
                     )
-                 
-                 (insectPoisonReadExp $space $type $rest)
-             )
-                    
-                )
+                    (collapse (test-superpose))
+                    (println! $now)
+                    (stimulate $now 500)
+                ))
             )
         )     
     )
 )
 
-!(insectPoisonReadExp &insect insectSent (match &insect (insectSent $x) $x))
-!(getAtomList)
-!(get-atoms (TypeSpace))
+!(insectPoisonReadExp &poison poisonSent (match &poison (poisonSent $x) $x))
