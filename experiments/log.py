@@ -34,7 +34,10 @@ def parse_path(file_path: str) -> Path:
         raise TypeError(f"parse_path accepts only str instance {type(file_path)}")
 
     base_path = Path(__file__).parent.parent
-    path_str = base_path / file_path[1:-1]
+    if file_path.startswith("'") and file_path.endswith("'"):
+        file_path = file_path[1:-1]
+
+    path_str = base_path / file_path
 
     if not path_str.exists() or not path_str.is_dir() or not os.access(path_str, os.R_OK):
         raise ValueError(f"{path_str} can not be resolved")
@@ -277,5 +280,3 @@ def write_to_csv(snapshot):
                 raise ValueError(f"Invalid snapshot entry format: {entry}")
 
             writer.writerow([timestamp, entity, value1, value2])
-
-    print(f"Wrote {len(snapshot)} rows to {csv_path}")
