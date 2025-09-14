@@ -42,11 +42,66 @@
         (
          ($diffusionSourceVector (diffusionSourceVector $space))
          ($result (collapse (diffuseAtom (superpose $diffusionSourceVector) $space2 AF)))
-         (($atom $atomToReceive $stiGiven) (superpose $result))
+         ($trades (collapse (tradeList $result)))
+         (($atom $finalSti) (superpose $trades))
         )
         
-        (tradeSti $atom $atomToReceive $stiGiven)
+        (setSti $atom $finalSti)
         
+    )
+)
+
+;; This function takes all possible diffusions and tallies the final sti value 
+;; for each atom affected by the agent
+;; Parameters:
+;;      $result: an account for all sti trades callculated by the agent
+;; Return:
+;;      (non-detrministic) an Expression atom (($atom $stiValue)....) listing all atoms and new stivalues
+(: tradeList (-> Expression Expression))
+(= (tradeList $result)
+    (let*
+        (
+            ($diffusingAtoms (collapse 
+                (let ($atom $atomToReceive $stiGiven)
+                    (superpose $result)
+                    $atom 
+                )
+            ))
+            ($recivingAtoms (collapse 
+                (let ($atom $atomToReceive $stiGiven)
+                    (superpose $result)
+                    $atomToReceive 
+                )
+            ))
+            ($combindedAtoms (union-atom $diffusingAtoms $recivingAtoms))
+            ($sources (unique-atom $combindedAtoms))
+            ($source (superpose $sources))
+            ($sourceSti (collapse (filterTrade $result $source)))
+            ($trade (foldl-atom $sourceSti 0 $acc $x (+ $acc $x)))
+            ($newTrade (+ (getSti $source) $trade))
+        )
+        ($source $newTrade)
+    )
+)
+
+;; This function filters returns sti transfers for a given atom and negates all values 
+;; where it is giving sti
+;; Parameters:
+;;      $result: list of all trades
+;;      $source: atom in consideration
+;; Result: (non - deterministic)
+;;      Number value of sti trade of an atom
+(: filterTrade (-> Expression Atom Number))
+(= (filterTrade $result $source)
+    (let ($atom $atomToReceive $stiGiven)
+        (superpose $result)
+        (if (== $atom $source)
+            (* -1 $stiGiven)
+            (if (== $atomToReceive $source)
+                $stiGiven
+                (empty)
+            )
+        )
     )
 )
 
