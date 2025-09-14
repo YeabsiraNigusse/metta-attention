@@ -53,12 +53,12 @@
 !(stimulate Ants 30)
 !(test-superpose)
 
-!(assertEqual (getAtomList) ((SimilarityLink abamectin Ants) Ants))
+!(assertEqual (getAtomList) (Ants (SimilarityLink abamectin Ants)))
 !(assertEqual (getSti Ants) 360)
 !(assertEqual (getLti Ants) 600)
 !(assertEqual (getSti (SimilarityLink abamectin Ants)) 240)
 !(assertEqual (getLti (SimilarityLink abamectin Ants)) 0)
-!(assertEqual (collapseAtomBin (atomBin)) ((47 ((SimilarityLink abamectin Ants))) (52 (Ants))))
+!(assertEqual (collapseAtomBin (atomBin)) ((52 (Ants)) (47 ((SimilarityLink abamectin Ants)))))
 
 !(assertEqual (collapse (get-atoms &newAtomInAV)) ())
 
