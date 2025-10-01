@@ -51,14 +51,11 @@
 
 ; Attention value management
 !(import! &self metta-attention:attention-bank:attention-value/getter-and-setter)
+!(import! &self metta-attention:attention-bank:attention-value/get-min-max)
 
 ; ============================================================================
 ; ATTENTION BANK CORE COMPONENTS
 ; ============================================================================
-; Atom bins and content management
-!(import! &self metta-attention:attention-bank:bank/atom-bins/get-min-max-content)
-!(import! &self metta-attention:attention-bank:bank/atom-bins/atombins)
-
 ; Core attention bank
 !(import! &self metta-attention:attention-bank:bank/attention-bank)
 

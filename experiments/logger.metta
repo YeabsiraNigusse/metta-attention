@@ -1,5 +1,3 @@
-(register-module! ../../metta-attention)
-(import! &self metta-attention:attention:AttentionParam)
 !(register-module! ../experiments)
 
 !(python-import "experiments.log" log)
@@ -10,24 +8,25 @@
 
 
 
-(= (write_csv_wrapper $space)
+(= (write_csv_wrapper $afAtoms)
     (let $snapshot
-        (collapse (AFsnapshot $space))
+        (collapse (AFsnapshot $afAtoms))
         (let $fsnapshot
             (format-args "{}" ($snapshot))
-            ; (println! $fsnapshot)
             (write_to_csv $_ $fsnapshot)
-        )
     )
 )
 
-(= (AFsnapshot $space)
-    (let* 
-        (
-            ($atom (get-atoms $space))
-            ($av (getAv $atom))
-        ) 
-        ($atom $av) 
+(= (AFsnapshot $afAtoms)
+    (if (== $afAtoms ())
+        ()
+        (let* 
+            (
+                ($atom (superpose $afAtoms))
+                ($av (getAv $atom))
+            ) 
+            ($atom $av) 
+        )
     )
 )
 

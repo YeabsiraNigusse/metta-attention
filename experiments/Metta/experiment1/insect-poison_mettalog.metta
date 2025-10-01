@@ -19,7 +19,6 @@
 
 !(updateAttentionParam MAX_SPREAD_PERCENTAGE 0.60)
 !(updateAttentionParam AFRentFrequency 5.0)
-(updateAttentionParam HEBBIAN_MAX_ALLOCATION_PERCENTAGE 0.01)
 
 
 !(start_log (attentionParam) experiments/Metta/experiment1)
