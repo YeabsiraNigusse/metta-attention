@@ -1,11 +1,10 @@
 !(register-module! ../../../../../metta-attention)
 !(import! &self metta-attention:attention-bank:utilities/helper-functions)
 !(import! &self metta-attention:attention:AttentionParam)
-!(import! &self metta-attention:attention-bank:bank/atom-bins/atombins)
-!(import! &self metta-attention:attention-bank:bank/atom-bins/get-min-max-content)
 !(import! &self metta-attention:attention-bank:bank/importance-index/importance-index)
 !(import! &self metta-attention:attention-bank:bank/attention-bank)
 !(import! &self metta-attention:attention-bank:attention-value/getter-and-setter)
+!(import! &self metta-attention:attention-bank:attention-value/get-min-max)
 !(import! &self metta-attention:attention:RentCollectionAgent/RentCollectionBaseAgent/RentCollectionBaseAgent)
 !(import! &self metta-attention:attention-bank:bank/stochastic-importance-diffusion/stochastic-importance-diffusion)
 !(import! &self metta-attention:attention-bank:bank/attentional-focus/attentional-focus)
@@ -30,17 +29,10 @@
 ; Sleep for the computed time to match C++ behavior
 !((py-atom time.sleep) 0.5)
 !(WARentCollectionAgent-Run)
+
 !(assertEqual (< (getSti (Hebbianlink (Hebbianlink c d) (Hebbianlink c b))) 33.725) True) ;must have lower sti
 !(getSti (Hebbianlink (Hebbianlink c d) (Hebbianlink c b)))
 !(assertEqual  (getSti b) 60000.0)
 !(assertEqual (getSti c)  30000.0)
 !(assertEqual (getSti d) 2900.0)
 !(assertEqual (getSti (Hebbianlink a b)) 355.0)
-
-
-
-
-
-
-
-

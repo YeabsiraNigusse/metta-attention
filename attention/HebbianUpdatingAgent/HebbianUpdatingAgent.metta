@@ -1,6 +1,3 @@
-(bind! tcDecayRate 0.1)
-(bind! DEFAULT_K 800)
-
 ;;; Function: HebbianUpdatingAgent-Run
 ;;; Description: Main Function to run the Hebbian Updating Agent.
 ;;; Parameters: None
@@ -46,7 +43,8 @@
                                     ($tcDecayRate (getAttentionParam TC_DECAY_RATE))
                                     ($new-tc (targetConjunction $outgoing))
                                     (($STV $old-tc $conf) (getStv $iset))
-                                    ($tc (+ (* $tcDecayRate $new-tc) (* (- 1.0 $tcDecayRate) $old-tc)))                                    ($create-tv ($tc 0.1))
+                                    ($tc (+ (* $tcDecayRate $new-tc) (* (- 1.0 $tcDecayRate) $old-tc)))
+                                    ($create-tv ($tc 0.1))
                                     ($new-tv (mergeCalculation $create-tv ($old-tc $conf) PLN_BOOK_REVISION))
                                 )
                                     (setStv $iset $new-tv)

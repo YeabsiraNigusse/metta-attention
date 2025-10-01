@@ -8,6 +8,7 @@
 !(import! &self metta-attention:attention-bank:bank:attentional-focus:attentional-focus)
 !(import! &self metta-attention:attention-bank:bank:importance-index:importance-index)
 
+!(updateAttentionParam FORGET_THRESHOLD 5)
 ; stimualte 0.25 translated to lti 5
 
 !(stimulate a 1)
@@ -83,16 +84,14 @@
 !(assertEqual (getAttentionParam FUNDS_STI) 99174.80000000002)
 
 
-!(forgettingAgent-Run (atomBin))
+!(forgettingAgent-Run (TypeSpace))
 
 
 !(let*
     (
         ($rmvspace (getAtomsInRemoveSpace))	
         ($typspace (getAtomsInTypeSpace)) 
-        ($newAtomInAV (getNewAtomInAVList))
         ($assertTypespace (assertEqual (intersection-atom $typspace $rmvspace) ()))
-        ($assertNewtoAvspace (assertEqual (intersection-atom $newAtomInAV $rmvspace) ()))
     )
     ()
 ) 

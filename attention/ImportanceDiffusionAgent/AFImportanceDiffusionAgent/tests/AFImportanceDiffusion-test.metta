@@ -40,7 +40,7 @@
 
 
 ;########################## Running the AF Importance Diffusion Agent #############################
-!(AFImportanceDiffusionAgent-Run (attentionalFocus) (TypeSpace))
+!(AFImportanceDiffusionAgent-Run (TypeSpace))
 ;########################## Testing the STI values #############################
 !(assertEqual (getSti source) 6000.0)
 !(assertEqual (getSti target1) 8000.0)
@@ -64,7 +64,7 @@
 !(assertEqual (getSti (INHERITANCE_LINK target3 (ASYMMETRIC_HEBBIAN_LINK sorce target4))) 1600)
 
 ; ;########################## Running the AF Importance Diffusion Agent #############################
-!(AFImportanceDiffusionAgent-Run (attentionalFocus) (TypeSpace))
+!(AFImportanceDiffusionAgent-Run (TypeSpace))
 ; ;########################## Testing the STI values #############################
 !(assertEqual (getSti source) 5998.9000000000015)
 !(assertEqual (getSti target1) 8000.0)

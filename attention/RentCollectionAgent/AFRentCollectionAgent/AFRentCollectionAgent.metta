@@ -13,7 +13,7 @@
 ; Returns: A list of atoms in attentional focus.
 (: selectAFTargets (-> Expression))
 (= (selectAFTargets)
-    (getAtomList)
+    (getAfAtoms)
 )
 
 ; Function: collectRent
@@ -72,6 +72,7 @@
           ($ltiAtomRent (getAttentionParam StartingAtomLtiRent))
           ($calculatestirent  (calculateStiRent $stiAtomRent))
           ($calculateltirent  (calculateLtiRent $ltiAtomRent))
+
         )
         (if (and (== $calculatestirent  0.0) (== $calculateltirent 0.0))
           ()
