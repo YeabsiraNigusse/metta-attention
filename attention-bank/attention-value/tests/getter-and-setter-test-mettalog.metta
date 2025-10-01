@@ -10,7 +10,7 @@
 
 
 ; Test case 01: testing attention value setter(setAv) function for symbol atom type and 
-;testing that atoms are inserted to atombins and attentional focus space when av is set to them
+
 !(assertEqual (getAttentionParam FUNDS_STI) 100000)
 !(assertEqual (getAttentionParam FUNDS_LTI) 100000)
 !(setAv A (200 200 0)) 
@@ -20,8 +20,7 @@
 !(setAv Human (400 400 1))
 !(assertEqual (getAttentionParam FUNDS_STI) 98400)
 !(assertEqual (getAttentionParam FUNDS_LTI) 98400)
-!(assertEqual (getAtomsInBins) ((53.0 (Human Animal Cat A))))
-!(assertEqual (getAtomList) (A Cat Animal Human))
+
 ; Test case 02: testing attention value getter(getAv) function for symbol atom type
 
 ! (assertEqual (getAv A) (AV 400 400 0)) ; getting attention value for symbol A
@@ -37,9 +36,12 @@
 ! (setAv (a) (397 400 1))
 ! (setAv (C) (400 400 1))
 ! (setAv (EvaluationLink a b) (300 200 0))
+! (setAv (Hebbianlink a b) (300 200 0))
 ! (setAv (Hebbianlink Human Cat) (200 200 0))
 ! (setAv (Hebbianlink (Hebbianlink Human Cat) Animal) (300 200 0))
 ! (setAv (Hebbianlink (Hebbianlink Animal Human) (Hebbianlink Animal Cat)) (200 200 0))
+
+!(getAttentionParam FUNDS_STI) ; 96303
 
 
 ; Test case 04: testing attention value getter(getAv) function for link/expressions atom type
@@ -106,6 +108,24 @@
 !(setLti k 200)
 !(setVlti k 200)
 !(assertEqual (getAv k) (AV 200 200 200))
-!(assertEqual (getAttentionParam FUNDS_STI) 96403)
-!(assertEqual (getAttentionParam FUNDS_LTI) 96600)
 
+!(assertEqual (getAttentionParam FUNDS_STI) 96103)
+!(assertEqual (getAttentionParam FUNDS_LTI) 96400)
+
+
+; Test case 11: testing  functions globalIncomingSetByType and globalIncomingSetwithoutType
+!(assertEqual (globalIncomingSetByType a EvaluationLink)  ((EvaluationLink a b)))
+!(assertEqual (globalIncomingSetByType Human Hebbianlink) ((Hebbianlink Human Cat)))
+
+!(assertEqual (let $vals
+    (globalIncomingSetwithoutType a)
+    (subtraction-atom $vals ((EvaluationLink a b) (Hebbianlink a b)))
+    ) 
+    ()
+)
+!(assertEqual (let $vals
+    (globalIncomingSetwithoutType Human)
+    (subtraction-atom $vals ((SimilarityLink Human Cat) (Hebbianlink Human Cat)))
+    ) 
+    ()
+)

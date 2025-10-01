@@ -76,7 +76,7 @@
     (if (== (collapse (match &atomBinInfo ($index $_) $index)) ($index))
         (let (($cnt $cntVal) ($idx $idxVal) ($size $sizeVal) ($updateRate $updateRateVal) ($lastUpdate $lastUpdateVal)) 
                 (match &atomBinInfo ($index $info) $info)
-                (if (== $updateRateVal 0)
+                (if (is $updateRateVal 0)
                     ("updateRate can not be zero")
                     (/ $sizeVal $updateRateVal)
                 )

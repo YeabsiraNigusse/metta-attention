@@ -191,7 +191,25 @@
                ($greater (filterGreaterEqual $pivot $rest)) ; Elements greater or equal to pivot
                ($greaterRemaining (sort $greater))
            )
-           (union-atom (sort $smaller) (cons-atom $pivot $greaterRemaining)  ) ; Recursively sort and combine
+           (union-atom $x $y) ; Recursively sort and combine
+       )
+   )
+)
+
+(= (sortDecend $list)
+   (if (== $list ())
+       () ; Base case: empty list is already sorted
+       (let*
+           (
+               ($pivot (car-atom $list)) ; Split into pivot and rest
+               ($rest (cdr-atom $list))
+               ($smaller (filterLess $pivot $rest)) ; Elements smaller than pivot 2 7 3 3
+               ($greater (filterGreaterEqual $pivot $rest)) ; Elements greater or equal to pivot 9 7 3
+               ($greaterRemaining (sortDecend $greater))
+               ($x (sortDecend $smaller))
+               ($y (cons-atom $pivot $x))
+           )
+           (union-atom $greaterRemaining $y) ; Recursively sort and combine
        )
    )
 )
@@ -223,7 +241,7 @@
               ($tail (cdr-atom $list))
                ($restFiltered (filterGreaterEqual $pivot $tail)) ; Recursive filtering
            )
-           (if (>= $head $pivot)
+           (if (or (> $head $pivot) (is $head $pivot))
                (cons-atom $head $restFiltered) ; Include $head if it's greater or equal to $pivot
                $restFiltered ; Skip $head otherwise
            )
@@ -353,6 +371,36 @@
         (cdr-atom $link)
         ()
     )
+)
+(= (sortAtomsDescending $atoms) 
+    (if (== $atoms ())
+		()
+		(let*
+			(
+				($pivot (car-atom $atoms))
+				($tail (cdr-atom $atoms))
+				($lesser (binaryFilter lessThanSti  $pivot $tail))
+				($greater (binaryFilter greaterThanSti  $pivot $tail))
+                ($sortedLesser (sortAtomsDescending $lesser))
+                ($sortedGreater (sortAtomsDescending $greater))
+			)	
+           (concatTuple $sortedGreater (cons-atom $pivot $sortedLesser))
+		)
+	)
+
+)
+
+(= (lessThanSti $elem $pivot)
+    (if (or (== $elem ()) (== $pivot ()))
+		False
+	    (<= (getSti $elem) (getSti $pivot))
+    )   
+)
+(= (greaterThanSti $elem $pivot)
+    (if (or (== $elem ()) (== $pivot ()))
+		False
+	    (> (getSti $elem) (getSti $pivot))
+    )   
 )
 
 (= (log' $x $y)
